@@ -79,14 +79,32 @@ text1 = "Hello, do you like tea?"
 text2 = "In the sunlit terraces of the palace."
 
 text = " <|endoftext|> ".join((text1, text2))
-print(text)
+#print(text)
 
 all_tokens = sorted(list(set(preprocessed)))
 all_tokens.extend(["<|endoftext|>", "<|unk|>"])
 vocab = {token:integer for integer,token in enumerate(all_tokens)}
 
 tokenizer = SimpleTokenizerV2(vocab)
-for i, item in enumerate(list(vocab.items())[-5:]):
-    print(item)
-print(tokenizer.encode(text))
-print(tokenizer.decode(tokenizer.encode(text)))
+#for i, item in enumerate(list(vocab.items())[-5:]):
+    #print(item)
+#print(tokenizer.encode(text))
+#print(tokenizer.decode(tokenizer.encode(text)))
+
+#___________
+# Byte pair encoding
+from importlib.metadata import version
+import tiktoken
+
+tokenizer = tiktoken.get_encoding("gpt2")
+
+text = (
+    "Hello, do you like tea? <|endoftext|> In the sunlit terraces"
+     "of someunknownPlace."
+)
+
+integers = tokenizer.encode(text, allowed_special={"<|endoftext|>"})
+print(integers)
+
+strings = tokenizer.decode(integers)
+print(strings)
