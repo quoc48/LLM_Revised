@@ -250,3 +250,20 @@ train_losses, val_losses, tokens_seen = train_model_simple(
 end_time = time.time()
 execution_time_minutes = (end_time - start_time) / 60
 print(f"Training completed in {execution_time_minutes:.2f} minutes.")
+
+#___________________
+# Decoding strategies to control randomness
+
+model.to("cpu")
+model.eval()
+
+tokenizer = tiktoken.get_encoding("gpt2")
+
+token_ids = generate_text_simple(
+    model=model,
+    idx=text_to_token_ids("Every effort moves you", tokenizer),
+    max_new_tokens=25,
+    context_size=GPT_CONFIG_124M["context_length"]
+)
+
+print("Output text:\n", token_ids_to_text(token_ids, tokenizer))
